@@ -28,21 +28,6 @@ if (isset($_SESSION['zalogowany'])){
         echo '<br><span style="color: red; font-weight: bold;">Błąd połączenia z bazą danych! </span><br>';
     }
     
-} else if(isset($_POST['reset'])) {
-    $tresc = "";
-} else if(isset($_POST['delete'])) {
-    //Przed skasowaniem dialogbox Yes/No by się przydać.
-    $query= mysql_query("DELETE FROM komentarze WHERE IdKom='$nrKom'");
-    if ($query) {
-        echo '<br><span style="color: green; font-weight: bold;">Komentarz został usunięty! </span><br>';
-        // Powrót na index po 3 sekundach.
-		header("Refresh: 3; url=index.php");
-    } else {
-        echo '<br><span style="color: red; font-weight: bold;">Błąd połączenia z bazą danych! </span><br>'.mysql_error();
-    }
-	date_default_timezone_set("Europe/Warsaw");
-
-
 }
 ?>
 

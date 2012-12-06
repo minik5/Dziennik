@@ -13,8 +13,9 @@ if (isset($_GET['IdWpisu']))
     if (mysql_num_rows($result)==1){
         $wpis=  mysql_fetch_assoc($result);   
 		//do komentarzy, R.P.
-		$spr = mysql_query("SELECT Komentarze FROM Dzienniki WHERE IdDziennika='".$wpis['IdDziennika']."'");
-		$rowK = mysql_fetch_array($spr,MYSQL_ASSOC);		
+		$spr = mysql_fetch_assoc(mysql_query("SELECT * FROM katalog WHERE IdKatalog ='".$wpis['IdKatalog']."'"));
+		$spr2 = mysql_query("SELECT Komentarze FROM Dzienniki WHERE IdDziennika='".$spr['IdDziennika']."'");
+		$rowK = mysql_fetch_array($spr2,MYSQL_ASSOC);		
 		//koniec, R.P.
         $tytul=$wpis['Tytul'];
         $tresc=$wpis['Tresc'];
@@ -73,6 +74,9 @@ if (isset($_GET['IdWpisu']))
 			<input type="submit" name="Usun" value ="Usun" disabled="disabled">
 		</form>
 	</div>
+	<form name="buttonForm" action="reportForm.php?idWpisu=<?php echo $IdWpisu; ?>" method="POST">
+			<input type="submit" name="zglos" value ="Zgłoś ten wpis">
+		</form>
 	
 </div>
 <div id="simplegallery"></div>

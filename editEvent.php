@@ -26,34 +26,6 @@ if (isset($_SESSION['dziennik'])){
             $result = mysql_fetch_array($query);
             $tytul = $result['Tytul'];
             $wpis = $result['Tresc'];
-
-
-        if(isset($_POST['submit'])) {    
-
-            $tytul = $_POST['title'];
-            $wpis = $_POST['inscription'];
-
-            $query=mysql_query("UPDATE wpisy SET Tytul='$tytul',Tresc='$wpis' WHERE IdWpis='$idWpisu'");
-
-            if ($query) {
-                echo '<br><span style="color: green; font-weight: bold;">Wpis został zmieniony! </span><br>';
-            } else {
-                echo '<br><span style="color: red; font-weight: bold;">Błąd połączenia z bazą danych! </span><br>';
-            }
-
-        } else if(isset($_POST['reset'])) {
-            $tytul = "";
-            $wpis = "";
-        } else if(isset($_POST['delete'])) {
-            //Przed skasowaniem dialogbox Yes/No by się przydać.
-            $query= mysql_query("DELETE FROM wpisy WHERE IdWpis='$idWpisu'");
-            if ($query) {
-                echo '<br><span style="color: green; font-weight: bold;">Wpis został usunięty! </span><br>';
-                // Dobrze by było żeby nie zostawiać na stronie. Najlepiej info i powrót na index.
-            } else {
-                echo '<br><span style="color: red; font-weight: bold;">Błąd połączenia z bazą danych! </span><br>';
-            }
-        }
         }
     }
 ?>
