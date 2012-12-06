@@ -1,0 +1,73 @@
+/*/////////////////////////////////////////////////////////////////////////////
+/// Name: Simple Gallery													///
+/// Version: 2.5															///
+/// Author: Allembru														///
+/// Website: <http://www.allembru.com/>										///
+/// Credits: jQuery <http://jquery.com/>, Fancybox <http://fancybox.net/>	///
+///////////////////////////////////////////////////////////////////////////////
+/// Simple Gallery v2.5 Photo Gallery Generator								///
+/// Copyright (C) 2012  Allembru											///
+///																			///
+/// This program is free software: you can redistribute it and/or modify	///
+/// it under the terms of the GNU General Public License as published by	///
+/// the Free Software Foundation, either version 3 of the License.			///
+///																			///
+/// This program is distributed in the hope that it will be useful,			///
+/// but WITHOUT ANY WARRANTY; without even the implied warranty of			///
+/// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the			///
+/// GNU General Public License for more details.							///
+///																			///
+/// You should have received a copy of the GNU General Public License		///
+/// along with this program.  If not, see <http://www.gnu.org/licenses/>	///
+/////////////////////////////////////////////////////////////////////////////*/
+
+@charset "utf-8";
+/* CSS Document */
+#simplegallery { 
+	font-family:Verdana, Geneva, sans-serif; 
+	font-size:12px;
+}
+#simplegallery ul { 
+	clear:both; 
+	display:block; 
+	margin:0px; 
+	padding:0px; 
+	list-style:none; 
+	line-height:30px;
+}
+#simplegallery ul li { 
+	float:left;
+}
+#sg_crumbs li {
+	margin-right:10px;
+	padding-right:26px;
+	background-image:url(../img/arrow_right.png);
+	background-position:right;
+	background-repeat:no-repeat;
+	cursor:pointer;
+	text-decoration:underline;
+	color:#0000FF;
+}
+#sg_crumbs li.current { 
+	margin-right:10px; 
+	padding-right:26px; 
+	background-image:none; 
+	font-weight:bold;
+	text-decoration:none;
+	color:#000;
+}
+#sg_dirs li { 
+	background-image:url(../img/folder.png); 
+	background-position:left;
+	margin-left:10px;
+	padding-left:26px;
+	background-repeat:no-repeat;
+	cursor:pointer;
+	text-decoration:underline;
+	color:#0000FF;
+}
+#sg_images li img {
+	margin:5px;
+	padding:3px;
+	border:1px solid #999;
+}

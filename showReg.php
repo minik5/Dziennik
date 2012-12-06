@@ -13,9 +13,8 @@ if (isset($_GET['IdWpisu']))
     if (mysql_num_rows($result)==1){
         $wpis=  mysql_fetch_assoc($result);   
 		//do komentarzy, R.P.
-		$spr = mysql_fetch_assoc(mysql_query("SELECT * FROM katalog WHERE IdKatalog ='".$wpis['IdKatalog']."'"));
-		$spr2 = mysql_query("SELECT Komentarze FROM Dzienniki WHERE IdDziennika='".$spr['IdDziennika']."'");
-		$rowK = mysql_fetch_array($spr2,MYSQL_ASSOC);		
+		$spr = mysql_query("SELECT Komentarze FROM Dzienniki WHERE IdDziennika='".$wpis['IdDziennika']."'");
+		$rowK = mysql_fetch_array($spr,MYSQL_ASSOC);		
 		//koniec, R.P.
         $tytul=$wpis['Tytul'];
         $tresc=$wpis['Tresc'];
@@ -29,6 +28,8 @@ if (isset($_GET['IdWpisu']))
 <title>Strona glowna</title>
 <link rel="stylesheet" type="text/css" href="Data/cssAddEditor.css">
 <script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="simplegallery/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="simplegallery/js/simplegallery.js"></script>
 
 </head>
 <body>
@@ -72,23 +73,32 @@ if (isset($_GET['IdWpisu']))
 			<input type="submit" name="Usun" value ="Usun" disabled="disabled">
 		</form>
 	</div>
-	<form name="buttonForm" action="reportForm.php?idWpisu=<?php echo $IdWpisu; ?>" method="POST">
-			<input type="submit" name="zglos" value ="Zgłoś ten wpis">
-		</form>
 	
 </div>
+<div id="simplegallery"></div>
+<script>sg_load("", "Galeria multimediów", "100", "80",<?php echo $IdWpisu; ?>);</script>
+
+<?php 
+/*
+$image_p = @imagecreatetruecolor(120, 80)
+      or die('Cannot Initialize new GD image stream');
+$image = imagecreatefromjpeg("upload/music.jpg");
+imagecopyresampled($image_p,$image,0,0,0,0,120,80,683,593);
+imagejpeg($image_p);
+*/
+?>
+
 <?php
-//echo 'komentowac: '.$rowK["Komentarze"].'';
+echo 'komentowac: '.$rowK["Komentarze"].'';
 if($rowK["Komentarze"] == "TAK"){
+echo $rowK["Komentarze"];
 	include("addComment.php");
 	comment($IdWpisu);
 	include("showComments.php");
 	show($IdWpisu);
 }
 ?>
-
 </body>
-
 </html>
 
 <?php
