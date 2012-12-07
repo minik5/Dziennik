@@ -32,8 +32,46 @@ if (isset($_GET['IdTrip'])) {
 <link href="" type="text/css" rel="stylesheet"/>      
 <title>Multimedialny dziennik podrÃ³ży - edytowanie wycieczki.</title>  
 
-<?php include ("ckeditor.php"); ?>
-
+<?php //include ("ckeditor.php"); ?>
+<script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+<script>
+$(document).ready(function(){
+	$('#coser').hide();
+	$('.editTrip').click(function(){
+	if ($("#title").val() == ""){
+	$('#coser').show();
+	}
+	else{
+	$('#coser').hide();
+	var form_data = {
+			title: $("#title").val(),
+			trip: $("#trip").val(),
+			dDateRoz: $("#dDateRoz").val(),
+			mDateRoz: $("#mDateRoz").val(),
+			yDateRoz: $("#yDateRoz").val(),
+			dDateZak: $("#dDateZak").val(),
+			mDateZak: $("#mDateZak").val(),
+			yDateZak: $("#yDateZak").val(),
+			datepickerRoz: $("#datepickerRoz").val(),
+			datepickerZak: $("#datepickerZak").val(),
+			submit: true,
+			addred: 1
+		};
+	$.ajax({
+			type: "POST",
+			url: "editTrip2.php?IdTrip="+$('#idTrip').val(),
+			data: form_data,
+		}).done(function( response ) {
+		$("#message").html(response);
+		});
+	}
+	});
+	$('.clearing').click(function(){
+	$("#title").attr('value','');
+	$("#trip").attr('value','');
+	});
+});
+</script>
 <script language="javascript">  
 function dateFun(){
    var datefield=document.createElement("input")
@@ -59,10 +97,12 @@ function dateFun(){
        }
 }
 </script>  
+<div id="message"></div>
 <div id="container" >
-<form name="addTrip" method="POST" action="editTrip.php?IdTrip=<?php echo $_GET['IdTrip']; ?>">                
+<input type="hidden" id="idTrip" value="<?php echo $_GET['IdTrip'];?>">
+<div id="coser"><font color="red"><b>Podaj tytuł wycieczki</b></font></div>                
 <p><label for="title">Tytuł wycieczki: </label></p>                
-<p> <input type="text" name="title" size="30" autofocus required="required" value="<?php echo $tytul; ?>"/>  </p> 
+<p> <input type="text" id="title" name="title" size="30" autofocus required="required" value="<?php echo $tytul; ?>"/>  </p> 
 <label for="datepickerRoz">Data rozpoczęcia:</label> 
 <input type='date' class='pDataRoz' id='datepickerRoz' name='datepickerRoz' value="<?php echo $dataRoz;?>"><br>
 			<!-- Dla przegladarek nieobslugujacych HTML5 typ: date -->
@@ -83,12 +123,11 @@ function dateFun(){
 			<!-- -------------------------------------------------------------- -->
 			</div>
 <p><label for="trip">Opis: </label></p>                
-<p><textarea class="ckeditor" name="trip" rows="20" cols="60" /><?php echo $opis; ?></textarea></p>                
+<p><textarea class="ckeditor" id="trip" name="trip" rows="20" cols="60" /><?php echo $opis; ?></textarea></p>                
 <p class="center">                    
-   <input type="reset" value="Wyczyść pola"/>                    
-   <input id="addTrip" type="submit" class="submit" name="submit" value="Zapisz"/>              
+   <input type="submit" class="clearing"value="Wyczyść pola"/>                     
+   <input id="addTrip" type="submit" class="editTrip" name="submit" value="Zapisz"/>              
 </p>            
-</form> 
 </div>
 <script>
 	//wywolaj po otwarciu strony

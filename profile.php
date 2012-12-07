@@ -49,18 +49,26 @@ $email = $r['Email'];
 $omnie = $r['OMnie'];
 $dataUr = $r['DataUr'];
 $dataRej = $r['DataRej'];
-$dziennik ="asd";
+$dziennik ="";
 $query= mysql_query("SELECT * FROM dzienniki WHERE IdDziennika ='".$nick."'");
-$spr = mysql_fetch_array($query,MYSQL_BOTH);
-if ($spr[0] == 1){
-$dziennik = $spr['Nazwa'];
+$spr = mysql_num_rows($query);
+if ($spr > 0){
+$spr2 = mysql_fetch_array($query,MYSQL_BOTH);
+$dziennik = $spr2['Nazwa'];
 }
 }
+else{
+echo $komunikaty;
+exit;
+}
+
 ?>
 
 <link href="Data/formLCSS.css" type="text/css" rel="stylesheet"/>
 <title>Multimedialny dziennik podróży - edycja danych.</title>
 <script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+<?php if ($result){
+?>
 <script>
 $(document).ready(function() {
 	$("#deleteForm").hide();
@@ -139,20 +147,53 @@ $(document).ready(function() {
 	
 	});
 	</script>
+<?php }
+else{
+?>
+<script>
+$(document).ready(function() {
+if ($('#namesdiary').val() == ""){
+$('.gotoDiary').hide();
+}
+$('.gotoDiary').click(function(){
+	var form_data = {
+			diaryname: $('#diaryname').val(),
+			addred: 1
+		};
+	$.ajax({
+			type: "POST",
+			url: "changeDiary.php",
+			data: form_data,
+		}).done(function( response ) {
+		if (response == "﻿success"){
+		$('.insideDiv').load('showReg.php');
+		}
+		else{
+		alert("error");
+		}
+		});
+	
+	});
+});
+	</script>
+	<?php
+	}
+	?>
 </head>
 <body>
 <div id="container">
 <fieldset>
 <?php echo $komunikaty; ?>
 <legend>Profil użytkownika: <?php echo $nick; ?></legend><br>
+<input type="hidden" id="diaryname" value="<?php echo $nick; ?>">
 <label for="firstname">Imie:</label>     <input type='text' value="<?php echo $imie;?>"  class='pData' id='firstname' name='firstname' disabled = "disabled"><br>
 	<label for="surname">Nazwisko:</label>   <input type='text' value="<?php echo $nazwisko;?>" class='pData' id='surname' name='surname' disabled="disabled"><br>
 	<label for="email">E-mail:</label>       <input type='email' value="<?php echo $email;?>" class='pData' id='email' name='email' disabled="disabled"><br><br>
 	<label for="omnie">O mnie:</label>       <input type='text'  value="<?php echo $omnie;?>" class='pData' id='omnie' name='omnie' disabled = "disabled"><br><br>
 	<label for="dataUr">Data urodzenia:</label>     <input type='text' value="<?php echo $dataUr;?>" class='pData'  id='dataur'  disabled = "disabled"><br><b>
 	<label for="dataRej">Data rejestracji:</label>  <input type='text' value="<?php echo $dataRej;?>" class='pData'  disabled = "disabled"><br>
-	<label for="dataRej">Prowadzony dziennik:</label> <input type="text" value="<?php echo $dziennik;?>"class='pData' id="DiaryName" name="nazwaDziennika" disabled="disabled"><br>
-	
+	<label for="dataRej">Prowadzony dziennik:</label> <input type="text" id="namesdiary" value="<?php echo $dziennik;?>"class='pData' id="DiaryName" name="nazwaDziennika" disabled="disabled"><br>
+	<input id="gotoDiary" type="submit" class="gotoDiary" value="Przejdź do dziennika"/> 
 	<?php
 	//**********WCZYTYWANIE LIST********************\\
 	

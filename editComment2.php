@@ -29,9 +29,7 @@ if (isset($_SESSION['zalogowany'])){
     }
     
 }
-if(isset($_POST['reset'])) {
-    $tresc = "";
-} else if(isset($_POST['delete'])) {
+elseif(isset($_POST['deletKom'])) {
     //Przed skasowaniem dialogbox Yes/No by się przydać.
     $query= mysql_query("DELETE FROM komentarze WHERE IdKom='$nrKom'");
     if ($query) {
@@ -44,6 +42,10 @@ if(isset($_POST['reset'])) {
 	date_default_timezone_set("Europe/Warsaw");
 
 
+}
+}
+}
+}
 }
 
 ?>

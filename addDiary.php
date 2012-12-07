@@ -4,6 +4,7 @@ include ("connection.php");
 ?>
 
 <?php
+$komunikaty ="";
 if (isset($_SESSION['zalogowany'])){
 $nick = $_SESSION['login'];
 $spr1 = mysql_fetch_array(mysql_query("SELECT COUNT(*) FROM dzienniki WHERE IdDziennika='".$nick."' LIMIT 1"));
@@ -15,23 +16,42 @@ $stop = true;
 <title>Strona głowna</title>
 <link rel="stylesheet" type="text/css" href="Data/cssFP.css">
 <script type="text/javascript" src="jquery-1.8.2.min.js"></script>
-
+<script>
+$(document).ready(function(){
+	$('.dodaj').click(function(){
+	var form_data = {
+			name_diary: $("#newDiary_name").val(),
+			wyslij: true,
+			opt: $("input:radio[name=opt]:checked").val(),
+			addred: 1
+		};
+	$.ajax({
+			type: "POST",
+			url: "addDiary2.php",
+			data: form_data,
+		}).done(function( response ) {
+		$("#message").html(response);
+		});
+	
+	});
+	
+});
+</script>
 </head>
 <body>
+<div id="message"></div>
 <div id="inside">
 <fieldset>
 <legend>Utwórz dziennik</legend>
 <?php if ($komunikaty && !isset($result)){ echo '<font color="red"><b>'.$komunikaty.'</b></font>';}
 	else { echo '<font color="blue">'.$komunikaty.'</font>';}?>
 <p>Nazwa dziennika:</p>
-<form action="addDiary.php" method="POST">
 <input type="text" id="newDiary_name" name="name_diary" size="40" placeholder="Tutaj wpisz nazwę dziennika" required="required">
 <p>Możliwość komentowania wpisów:</p>
 <input type="radio" name="opt" value="able" checked="yes">Włącz<br>
 <input type="radio" name="opt" value="disable">Wyłącz
 <br><br>
-<input type="submit" class="submit" name="wyslij" value="Wyślij" <?php if ($stop) { echo'disabled="disabled"';}?>>
-</form>
+<input class="dodaj" type="submit" class="submit" name="wyslij" value="Wyślij" <?php if ($stop) { echo'disabled="disabled"';}?>>
 </fieldset>
 </div>
 <script>

@@ -1,28 +1,42 @@
 ﻿<?php
-function comment($parametr){
+include ("connection.php");
+session_start();
+
+if (isset($_GET['IdWpisu'])){
+$parametr = $_GET['IdWpisu'];
 $komunikaty = "";
 if (isset($_SESSION['zalogowany'])){
 
-if (isset($_POST['wyslij'])){
-$nick = $_SESSION['login'];
-$komentarz = $_POST['komentarz'];
-$wpis = $parametr;
-	date_default_timezone_set("Europe/Warsaw");
-
-$result = mysql_query("INSERT INTO komentarze (IdWpisu, IdUser, Tresc, Widoczny, Ostrz, DataOstrz) VALUES('$wpis','$nick','$komentarz','',null,null)") or die("Nie mogłem dodac komentarza !".mysql_error());
-$komunikaty .= "ok";
-
-}
 ?>
 
-
-
+<script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+<script>
+$(document).ready(function(){
+	$('.addCom').click(function(){
+	var form_data = {
+			komentarz: $("#komentarz").val(),
+			wyslij: true,
+			addred: 1
+		};
+	$.ajax({
+			type: "POST",
+			url: "addComment2.php?IdWpisu="+$("#idwpisu").val(),
+			data: form_data,
+		}).done(function( response ) {
+		$("#message").html(response);
+		});
+	
+	});
+	
+});
+</script>
+<div id="message"></div>
 <div id="inside">
-<form action="showReg.php?IdWpisu=<?php if(isset($komunikaty))echo $parametr;?>" method="POST">
+<input type="hidden" id="idwpisu" value="<?php echo $parametr;?>">
 <p>Dodaj komentarz</p>
 <textarea style="color:grey; resize:none;" name="komentarz" id="komentarz" rows="7"  cols="40" placeholder="Miejsce na Twoj komentarz" required="required">
 </textarea><br>
-<input type="submit" name="wyslij" value="Wyslij">
+<input type="submit" class="addCom" name="wyslij" value="Wyslij">
 <?php if ($komunikaty =="ok")  { echo '<br><span style="color: green; font-weight: bold;">Komentarz został dodany. </span><br>';} ?>
 </form>
 </div>

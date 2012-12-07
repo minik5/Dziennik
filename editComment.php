@@ -9,41 +9,68 @@ if (isset($_SESSION['zalogowany'])){
 		$nrKom = $_GET['IdKom'];
 		$nick = $_SESSION['login'];
 		$query = mysql_query("SELECT * FROM komentarze WHERE IdKom='$nrKom'");
-		$query2 =mysql_query("SELECT * FROM uzytkownicy WHERE Dostep='1'");
+		$query2 =mysql_query("SELECT * FROM uzytkownicy WHERE Dostep='1' AND IdUser='$nick'");
 
 		if(mysql_num_rows($query) ==1){
 			$result = mysql_fetch_array($query);
-			$result2 = mysql_num_rows($query2);
-			if($result['IdUser'] == $nick || $result2>0){//tylko autor komentarza lub administrator mogą edytowac
+			if($result['IdUser'] == $nick || $query2){//tylko autor komentarza lub administrator mogą edytowac
 				$user = $result['IdUser'];
 				$tresc = $result['Tresc'];
-
-			if (isset($_POST['wyslij'])){
-			$tresc = $_POST['komentarz'];
-			$query=mysql_query("UPDATE komentarze SET Tresc='$tresc' WHERE IdKom='$nrKom'");
-    
-    if ($query) {
-        echo '<br><span style="color: green; font-weight: bold;">Komentarz został zmieniony! </span><br>';
-    } else {
-        echo '<br><span style="color: red; font-weight: bold;">Błąd połączenia z bazą danych! </span><br>';
-    }
-    
-}
 ?>
 
 
-
+<script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+<script>
+$(document).ready(function(){
+	$('.editcomment').click(function(){
+	var form_data = {
+			komentarz: $("#komentarz").val(),
+			wyslij: true,
+			addred: 1
+		};
+	$.ajax({
+			type: "POST",
+			url: "editComment2.php?IdKom="+$("#idkom").val(),
+			data: form_data,
+		}).done(function( response ) {
+		$("#message").html(response);
+		});
+	});
+	$('.delcomment').click(function(){
+	alert("aaa");
+	var form_data = {
+			komentarz: $("#komentarz").val(),
+			deletKom: true,
+			addred: 1
+		};
+	$.ajax({
+			type: "POST",
+			url: "editComment2.php?IdKom="+$("#idkom").val(),
+			data: form_data,
+		}).done(function( response ) {
+		$("#message").html(response);
+		$('.clearing').hide();
+		$('.editcomment').hide();
+		$('.delcomment').hide();
+		});
+	
+	});
+    $('.clearing').click(function(){
+	$("#komentarz").attr('value','');
+	});
+	
+});
+</script>
+<div id="message"></div>
 <div id="inside">
-<form action="editComment.php?IdKom=<?php echo $nrKom;?>" method="POST">
 <p>Komentarz</p>
+<input type="hidden" id="idkom" value="<?php echo $nrKom;?>">
 <textarea style="color:grey; resize:none;" name="komentarz" id="komentarz" rows="7"  cols="40"  required="required">
 <?php echo $tresc; ?>
 </textarea><br>
-<input type="submit" name="reset" value="Wyczyść pole"> 
-<input type="submit" name="wyslij" value="Wyslij">
-<input type="submit" name="delete" value="Usuń">
-<?php //if ($komunikaty =="ok")  { echo '<br><span style="color: green; font-weight: bold;">Komentarz został dodany. </span><br>';} ?>
-</form>
+<input type="submit" class="clearing"name="reset" value="Wyczyść pole"> 
+<input type="submit" class="editcomment" name="wyslij" value="Wyslij">
+<input type="submit" class="delcomment" name="delete" value="Usuń">
 </div>
 </body>
 

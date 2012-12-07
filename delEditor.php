@@ -29,20 +29,55 @@ $row = mysql_fetch_array($query2);
 <title>Usuwanie redaktora</title>
 <link rel="stylesheet" type="text/css" href="Data/cssAddEditor.css">
 <script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("#pass").hide();
+	$('.usun').click(function(){
+	if ($('#Psswd').val() == ""){
+	$("#pass").show();
+	}
+	else{
+	$("#pass").hide();
+	var delw = [];
+	$('input:checkbox[name="delwpis[]"]:checked').each(function() {
+            delw.push(this.value);
+     });
+	var form_data = {
+			password: $('#Psswd').val(),
+			delRed: true,
+			delwpis: delw,
+			addred: 1
+		};
+	$.ajax({
+			type: "POST",
+			url: "delEditor2.php?id="+$("#idEditor").val(),
+			data: form_data, 
+		}).done(function( response ) {
+		$("#message").html(response);
+		});
+	}
+		});
+		
+		
+});
 
+
+</script>
 </head>
 <body>
+<div id="message"></div>
 <div id="inside">
 <p><b><?php echo $row['Nick'] ?></b></p>
-	<form name="Del_Editor" method="POST" action="delEditor.php?id=<?php echo $id ?>"><br>
-	    <input type="hidden" name="idRed" value="<?php echo $id ?>">
+	    <input type="hidden" id="idEditor" value="<?php echo $id;?>">
 		<input type="text" id="NickR" class="" size="25" style="color:grey;" disabled value="<?php echo $row['Nick'] ?>"><br>
 		<input type="text" id="ImieR" class="" size="25" style="color:grey;" disabled value="<?php echo $row['Imie'] ?>"><br>
 		<input type="text" id="NazwR" class="" size="25" style="color:grey;" disabled value="<?php echo $row['Nazwisko'] ?>"><br>
 		<?php
-		$wpis = mysql_query("SELECT * FROM wpisy WHERE IdDziennika = '".$nick."' AND NickRed = '".$result['NickRed']."'");
+		$query8=mysql_query("SELECT * FROM katalog WHERE IdDziennika = '".$nick."'");
 		$i =0;
-        while ($row = mysql_fetch_array($wpis, MYSQL_BOTH)){
+		while ($spr = mysql_fetch_array($query8,MYSQL_BOTH)){
+		$wpis = mysql_query("SELECT * FROM wpisy WHERE  IdKatalog = '".$spr['IdKatalog']."' AND NickRed = '".$result['NickRed']."'");
+        while ($wpis && $row = mysql_fetch_array($wpis, MYSQL_BOTH)){
 		if ($i == 0){
 		echo'<b>Wpisy redaktora w Twoim dzienniku:</b><br /><table border="1">
 		<tr>
@@ -62,6 +97,7 @@ $row = mysql_fetch_array($query2);
 			</tr>';
 			
 		}
+		}
 		if ($i > 0){
 		echo '</table>
 		<input type="checkbox" name="selectAll">Zaznacz wszystkie';
@@ -77,9 +113,9 @@ $row = mysql_fetch_array($query2);
 		?>
 		<br /><br />
 		<p>Podaj haslo w ramach potwierdzenia usunięcia redaktora</p>
+		<div id="pass"><font color="red"><b>Podaj hasło!</b></font></div>
 		<input type="password" id="Psswd" class="wpisz" size="25" style="color:grey;" name="password" value="" required="required"><br>
-		<input type="submit" name="usunRed" value="Zatwierdz zmiany">
-	</form>
+		<input class="usun" type="submit" name="usunRed" value="Zatwierdz zmiany">
 </div>
 <script>
 	$(".wpisz").click(function() {

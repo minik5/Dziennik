@@ -1,4 +1,6 @@
 <?php
+session_start();
+include("connection.php");
 $komunikaty = '';
 $stop = false;
 
@@ -31,7 +33,7 @@ if ($result){
 date_default_timezone_set("Europe/Warsaw");
 $data = date('Y-m-d');
 $zgl = mysql_query("INSERT INTO `zgloszenia` (NickUsera, Temat, Tresc, Url, DataZgl, StatusZgl) VALUES('$nick','dodanie dziennika','Proszę o dodanie dziennika do systemu','/adminAddDiary.php?id=$nick','$data','0')");
- $komunikaty.="Dziennik o nazwie ".$nazwa." został dodany.";
+ $komunikaty.="<font color='blue'>Dziennik o nazwie ".$nazwa." został dodany.</font><br /> <b>Wymaga jeszcze akceptacji przez admina</b>";
  $_SESSION['dziennik']=$nick;
  $stop=true;
 }
@@ -41,6 +43,7 @@ $komunikaty.=mysql_error();
 }
 }
 
+echo $komunikaty;
 /** Koniec dodawania nowego dziennika **/
 }
 

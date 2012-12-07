@@ -29,14 +29,45 @@ $r = mysql_fetch_array($query);
 <title>Strona glowna</title>
 <link rel="stylesheet" type="text/css" href="Data/cssAddEditor.css">
 <script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+<script>
+$(document).ready(function(){
+	$("#pass").hide();
+	$('.zmiana').click(function(){
+	if ($('#Psswd').val() == ""){
+	$("#pass").show();
+	}
+	else{
+	$("#pass").hide();
+	var form_data = {
+			nickred: $("#wpisz").val(),
+			password: $('#Psswd').val(),
+			option1: $('input:checkbox[name=option1]').val(),
+			option2: $('input:checkbox[name=option2]').val(),
+			zmiana: true,
+			addred: 1
+		};
+	$.ajax({
+			type: "POST",
+			url: "editEditor2.php?id="+$("#idEditor").val(),
+			data: form_data,
+		}).done(function( response ) {
+		$("#message").html(response);
+		});
+	}
+		});
+		
+});
 
+
+</script>
 </head>
 <body>
+<div id="message"></div>
 <div id="inside">
 <p>Edycja uprawnień redaktora</p>
 <?php if (isset($komunikaty) && (!isset($result) || $result == FALSE)) { echo '<font color="red"><b> '.$komunikaty.'</b></font>'; }
 	  elseif (isset($komunikaty)){echo '<font color="blue"><b> '.$komunikaty.'</b></font>';}?>
-	<form name="Access_Editor" method="POST" <?php echo 'action="editEditor.php?id='.$id.'"'; ?>><br>
+	  <input type="hidden" id="idEditor" value="<?php echo $id;?>">
 		Nick redaktora: <br /><input type="text" id="NickR" class="" size="25" style="color:black;" disabled value="<?php if (isset($r['NickRed'])) {echo $r['NickRed']; }?>"><br>
 		Nazwa dziennika: <br /><input type="text" id="NazwD" class="" size="25" style="color:black;" disabled value="<?php if (isset($d['Nazwa'])) {echo $d['Nazwa']; }?>"><br>
 	
@@ -56,10 +87,10 @@ $r = mysql_fetch_array($query);
 		>Mozliwosc edycji wspisow Autora <br>
 		
 		<p>Podaj haslo w ramach potwierdzenia </p>
+		<div id="pass"><font color="red"><b>Podaj hasło!</b></font></div>
 		<input type="password" id="Psswd" name="password" class="wpisz" size="25" style="color:grey;" value="" required="required"><br>
 		<p>Zatwierdz zmiany</p>
-		<input type="submit" name="zmiana" value="Zatwierdz">
-	</form>
+		<input class="zmiana" type="submit" name="zmiana" value="Zatwierdz">
 </div>
 <script>
 	$(".wpisz").click(function() {

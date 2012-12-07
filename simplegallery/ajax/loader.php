@@ -112,7 +112,7 @@ if(isset($_POST['action'])) {
 		{
 			if(strcmp($adresW[$i],$konc[3])==0){ //*****************
 			if($sg_path=='') {
-			echo '   Przefiltrowany plik: '.$konc[3];
+			//echo '   Przefiltrowany plik: '.$konc[3];
 			//echo $currentDir;
 				echo '<li><a href="simplegallery/inc/img.php?i='; if($rodzaj[$i]=='W'){echo '../../upload/play.jpg';}else if($rodzaj[$i]=='A'){
 					echo '../../upload/music.jpg';}else{echo $value;}echo'" rel="'.$currentDir.'" title="'.$komentarz[$i].'">

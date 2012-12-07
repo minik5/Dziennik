@@ -29,78 +29,46 @@ $dataZak = NULL;
 $tytul="";
 $opis="";
 
-if (isset($_POST['submit'])) {
-    
-    $daty=true;
-    $idDziennika = $_SESSION['dziennik'];
-    $tytul = $_POST['title'];
-    if (isset($_POST['trip'])) $opis = $_POST['trip'];
-    else $opis = "";
-    
-   if (getbrowser()=='ie' || getbrowser()=='firefox') {
-        // wczytanie dat dla przegl¹darek bez typu DATE
-        
-        if (!is_numeric($_POST['dDateRoz'])) {
-            echo '<br><span style="color: blue; font-weight: bold;">Dzień to liczba z przedziału 1..31!</span><br>';
-            $daty=false;
-        } else $dzien = (int)$_POST['dDateRoz'];        
-        if (!is_numeric($_POST['mDateRoz'])) {
-            echo '<br><span style="color: blue; font-weight: bold;">Miesiąc to liczba z przedziału 1..12!</span><br>';
-            $daty=false;
-        } else $mies = (int)$_POST['mDateRoz'];
-        if (!is_numeric($_POST['yDateRoz'])) {
-            echo '<br><span style="color: blue; font-weight: bold;">Rok to cztero-cyfrowa liczba!</span><br>';
-            $daty=false;
-        } else $rok = (int)$_POST['yDateRoz'];
-        if (!is_numeric($_POST['dDateZak'])) {
-            echo '<br><span style="color: blue; font-weight: bold;">Dzień to liczba z przedziału 1..31!</span><br>';
-            $daty=false;
-        } else $dzienZak = (int)$_POST['dDateZak'];
-        if (!is_numeric($_POST['mDateZak'])) {
-            echo '<br><span style="color: blue; font-weight: bold;">Miesiąc to liczba z przedziału 1..12!</span><br>';
-            $daty=false;
-        } else $miesZak = (int)$_POST['mDateZak'];
-        if (!is_numeric($_POST['yDateZak'])) {
-            echo '<br><span style="color: blue; font-weight: bold;">Rok to cztero-cyfrowa liczba!</span><br>';
-            $daty=false;
-        } else $rokZak = (int)$_POST['yDateZak'];
-        if ($daty) {
-            if (!checkdate($mies, $dzien, $rok) || !checkdate($miesZak, $dzienZak, $rokZak)) {
-                echo '<br><span style="color: blue; font-weight: bold;">Nieprawidłowa data!</span><br>';
-                $daty=false;
-            } else {
-                $dataRoz = $rok.'-'.$mies.'-'.$dzien;
-                $dataZak = $rokZak.'-'.$miesZak.'-'.$dzienZak;
-            }
-        }
-    }
-    else {
-        $dataRoz = $_POST['datepickerRoz'];
-        $dataZak = $_POST['datepickerZak'];
-    }
-    
-    if ( $dataRoz > $dataZak ) {
-        $daty=false;
-        echo '<br><span style="color: green; font-weight: bold;">Data zakończenia musi być późniejsza od daty rozpoczęcia!</span><br>'; 
-    }
-    
-    if ($daty) {
-        $spr = mysql_query("SELECT * FROM katalog WHERE Katalog='$tytul'");
-        if (mysql_num_rows($spr)==0) {
-            $query = "INSERT INTO katalog (IdDziennika,Katalog,Opis,DataRozpoczecia,DataZakonczenia) VALUES('$idDziennika','$tytul','$opis','$dataRoz','$dataZak')";
-            $result=mysql_query($query);
-            if ($result) {
-                echo '<br><span style="color: green; font-weight: bold;">Wpis został dodany!</span><br>';
-            }
-            else echo '<br><span style="color: green; font-weight: bold;">Nie można połączyć się z bazą danych!</span><br>';
-        } else echo '<br><span style="color: green; font-weight: bold;">Wycieczka o podanym tytule istenieje już w bazie danych!</span><br>';
-    }
-}
 ?>
 
 <link href="" type="text/css" rel="stylesheet"/>      
 <title>Multimedialny dziennik podróży - dodawanie wycieczki.</title>  
-
+<script type="text/javascript" src="jquery-1.8.2.min.js"></script>
+<script>
+$(document).ready(function(){
+	$('#coser').hide();
+	$('.dodajTrip').click(function(){
+	if ($("#title").val() == ""){
+	$('#coser').show();
+	}
+	else{
+	$('#coser').hide();
+	var form_data = {
+			title: $("#title").val(),
+			trip: $("#trip").val(),
+			dDateRoz: $("#dDateRoz").val(),
+			mDateRoz: $("#mDateRoz").val(),
+			yDateRoz: $("#yDateRoz").val(),
+			dDateZak: $("#dDateZak").val(),
+			mDateZak: $("#mDateZak").val(),
+			yDateZak: $("#yDateZak").val(),
+			datepickerRoz: $("#datepickerRoz").val(),
+			datepickerZak: $("#datepickerZak").val(),
+			submit: true,
+			addred: 1
+		};
+	$.ajax({
+			type: "POST",
+			url: "addTrip2.php",
+			data: form_data,
+		}).done(function( response ) {
+		$("#message").html(response);
+		});
+	}
+	});
+	
+});
+</script>
 <?php include ("ckeditor.php"); ?>
 
 <script language="javascript">  
@@ -128,11 +96,12 @@ function dateFun(){
        }
 }
 </script>  
-    
-<div id="container" >
-<form name="addTrip" method="POST" action="addTrip.php">                
+   
+  <div id="message"></div>
+<div id="container" >        
+<div id="coser"><font color="red"><b>Podaj tytuł wycieczki</b></font></div>        
 <p><label for="title">Tytuł wycieczki: </label></p>                
-<p> <input type="text" name="title" size="30" autofocus required="required" value="<?php echo $tytul; ?>"/>  </p> 
+<p> <input type="text" id="title" name="title" size="30" autofocus required="required" value="<?php echo $tytul; ?>"/>  </p> 
 <label for="datepickerRoz">Data rozpoczęcia:</label> 
 <input type='date' class='pDataRoz' id='datepickerRoz' name='datepickerRoz' value="<?php echo $dataRoz;?>"><br>
 			<!-- Dla przeglądarek nieobsługujących HTML5 typ: date -->
@@ -156,7 +125,7 @@ function dateFun(){
 <p><textarea class="ckeditor" name="trip" rows="20" cols="60" /><?php echo $opis; ?></textarea></p>                
 <p class="center">                    
    <input type="reset" value="Wyczyść pola"/>                    
-   <input id="addTrip" type="submit" class="submit" name="submit" value="Zapisz"/>              
+   <input id="addTrip" type="submit" class="dodajTrip" name="submit" value="Zapisz"/>              
 </p>            
 </form> 
 </div>

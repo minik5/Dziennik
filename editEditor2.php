@@ -41,15 +41,19 @@ if (!$result){
   $komunikaty.="Uprawnienia zostały nadane <br />";
   }
 }
-}
 else{
 $komunikaty.= "Podane aktualne hasło, jest nieprawidłowe. <br />";
 }
 }
-$query = mysql_query("SELECT * FROM redaktorzy WHERE IdRed = '".$id."' AND NazwaDziennika = '".$nick."'");
-$r = mysql_fetch_array($query);
+else{
+echo "Nie podano hasła!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+}
 
 
+}
+else{
+echo "Inexplicable internal error";
+}
 }
 else{
 echo'<br>Błąd. <br />Nie wybrano redaktora do zmiany uprawnień. <br />';
@@ -57,6 +61,7 @@ echo'<br>Błąd. <br />Nie wybrano redaktora do zmiany uprawnień. <br />';
 
 
 }
+echo $komunikaty;
 }
 else{
 echo '<br>Nie byłeś zalogowany albo zostałeś wylogowany<br><a href="login.php">Zaloguj się</a><br>';

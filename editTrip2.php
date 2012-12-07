@@ -87,7 +87,7 @@ if (isset($_POST['submit'])) {
         $query = "UPDATE katalog SET IdDziennika='$idDziennika',Katalog='$tytul',Opis='$opis',DataRozpoczecia='$dataRoz',DataZakonczenia='$dataZak' WHERE IdKatalog=".$_GET['IdTrip'];
         $result=mysql_query($query);
         if ($result) {
-           echo '<br><span style="color: green; font-weight: bold;">Wpis został zmieniony!</span><br>';
+           echo '<br><span style="color: green; font-weight: bold;">Wyciczka została zmieniona!</span><br>';
         } else echo '<br><span style="color: green; font-weight: bold;">Nie można połączyć się z bazą danych!</span><br>';
     }
 }

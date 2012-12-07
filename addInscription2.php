@@ -1,4 +1,4 @@
-﻿﻿<?php
+﻿<?php
 session_start();
 include("connection.php");
 
@@ -16,12 +16,14 @@ if (isset($_SESSION['dziennik']) && strlen($_SESSION['dziennik'])>1) {
     $login = $_SESSION['login'];
     $dziennik = $_SESSION['dziennik'];
 
-$zgl = mysql_query("SELECT * FROM zgloszenia WHERE NickUsera ='$login' AND Temat='dodanie dziennika' AND Url='/adminAddDiary.php?id=$login'");
-
+// Sprawdzanie czy dziennik został zaakceptowany przez admina
 $error = false;
+if ($_SESSION['dziennik'] == $login){
+$zgl = mysql_query("SELECT * FROM zgloszenia WHERE NickUsera ='$login' AND Temat='dodanie dziennika' AND Url='/adminAddDiary.php?id=$login'");
 while ($row = mysql_fetch_array($zgl)){
 if ($row['StatusZgl'] <> 2){
 $error = true;
+}
 }
 }
 if (!$error){
@@ -50,54 +52,6 @@ if(isset($_POST['submit'])) {
 }
 
 ?>
-
-<link href="" type="text/css" rel="stylesheet"/>  
-<title>Multimedialny dziennik podróży - dodawanie zdarzenia.</title>        
-
-<?php include ("ckeditor.php"); ?>
-
-<table>        
-    <th>         
-    <td>            
-        <form name="addInscription" method="POST" action="addInscription.php">                
-        <p><label for="title">Podróż: </label> 
-          <?php
-            $podroze = mysql_query("SELECT * FROM Katalog WHERE IdDziennika='$dziennik'");
-            if (mysql_num_rows($podroze)>0) {
-                echo "<select name='trip'>";
-                while ($podroz=mysql_fetch_assoc($podroze)) echo '<option>'.$podroz['Katalog'].'</option>';
-                echo "</select>";
-            }
-          ?>
-            <a href="addTrip.php"><button type="button">Dodaj podróż</button></a>
-        </p>
-        <p><label for="title">Tytuł zdarzenia: </label>               
-            <input type="text" name="title" size="30" autofocus required="required"/>                    
-            <button disable="disable"> Uprawnienia </button>                 
-        </p>                
-        <p><label for="inscription">Wpis: </label></p>                
-        <p><textarea class="ckeditor" name="inscription" rows="20" cols="60"/></textarea></p>                
-        <p class="center">                    
-           <input type="reset" value="Wyczyść pola"/>                    
-           <input type="submit" class="submit" name="submit" value="Zapisz"/>                
-        </p>            
-        </form>         
-    </td>           
-    </th>        
-    <th>                    
-        <table>               
-        <tr><td><label>Załącz zdjęcie: </label></td></tr>            
-        <tr><td></td></tr>            
-        <tr><td><label>Tu będzie kontener multimediów. </label></td></tr>
-        <tr><td><label>Załącz video: </label></td></tr>    
-        <tr><td><button>Przeglądaj</button></td></tr>    
-        <tr><td><label>Tu będzie kontener multimediów. </label> </td></tr>    
-        <tr><td><label>Załącz plik audio: </label></td></tr>    
-        <tr><td><button>Przeglądaj</button></td></tr>    
-        <tr><td><label>Tu będzie kontener multimediów. </label> </td></tr>                
-        </table>
-    </th>
-</table>
 
 <?php
 }

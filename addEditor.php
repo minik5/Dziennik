@@ -46,6 +46,17 @@ $(document).ready(function(){
 		});
 	
 	});
+	$('.clickRed').click(function(){
+	if ($('input:radio[id=redaktorid]:checked').val() != null){
+	if ($(this).val() == 'Edytuj'){
+	$('.insideDiv').load('editEditor.php?id='+$('input:radio[id=redaktorid]:checked').val());
+	}
+	else if ($(this).val() == 'Usun'){
+	$('.insideDiv').load('delEditor.php?id='+$('input:radio[id=redaktorid]:checked').val());
+	}
+	}
+	});
+	
 });
 </script>
 </head>
@@ -72,14 +83,14 @@ $(document).ready(function(){
 	</tr>
 	<?php 
 	$i = 0;
-	echo ('<form method="POST" action="addEditor.php">');
+	//echo ('<form method="POST" action="addEditor.php">');
 	while ($row = mysql_fetch_array($query, MYSQL_BOTH)){
 	$i ++;
 	
 		echo '<tr>
 		<td  class="select">
 			
-				<input type="radio" name="redaktor" value="'.$row['IdRed'].'" required="required"><br>
+				<input id="redaktorid" type="radio" name="redaktor" value="'.$row['IdRed'].'" required="required"><br>
 			
 		</td>
 		<td class="indexed">
@@ -95,18 +106,18 @@ $(document).ready(function(){
 	}
 echo'</table>
 <!-- Usuniecie Redaktora -->
-		    <input type="submit" name="edit" value="Edytuj"';
+		    <input class="clickRed" type="submit" id="Edytuj" name="edit" value="Edytuj"';
 			if ($i ==0){
 			echo ('disabled="disabled"');
 			}
 			echo'>
-			<input type="submit" name="del" value="Usun"';
+			<input class="clickRed" type="submit" id="Usun" name="del" value="Usun"';
 			if ($i ==0){
 			echo ('disabled="disabled"');
 			}			
 			echo'>';
 			?>
-		</form>
+		<!--</form>-->
 		</fieldset>
 </div>
 <script>

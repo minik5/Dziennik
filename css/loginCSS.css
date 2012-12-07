@@ -1,0 +1,11 @@
+
+#altBody{
+font-family: "Times New Roman", serif;
+margin: 0 auto; 
+position: absolute;
+}
+#container{ /* kontener glowny */
+height:600;
+width: 800;
+
+}

@@ -1,0 +1,105 @@
+
+body{
+font-family: "Times New Roman", serif;
+
+}
+#container{ /* kontener glowny */
+height:auto;
+width: auto;
+}
+#logoSearchDiv{
+width:100%;
+height:5em;
+clear:both;
+}
+.logoDiv{
+min-width:500px;
+left:10px;
+top:5px;
+z-index:2;
+position:absolute;
+
+
+}
+	.logoDiv p{
+	font-size:30px;
+	font-style:italic;
+	opacity:0.7;
+	overflow:hidden;  
+	clear:none;
+	}
+	
+#logoSearchDiv  .search_panel{
+right:10px;
+position:absolute;
+overflow:hidden;  
+float:right;
+}
+
+#menuDiv{
+width:200px;
+position:absolute;
+left:0px;
+overflow:hidden;  
+}
+	#menuDiv ul{
+	 list-style-type: none;
+	 font-size:small;
+
+	}
+	
+	a{
+    color:#fff;
+	}
+	#menuDiv ul li a{
+		 margin-bottom:3px;
+		 
+		 background-color:#000;
+		 display:block;
+		 width:98px;
+		 height:50px;
+		 color:#fff;
+		 text-align:center;
+		 text-transform:uppercase;
+		 outline:none;
+		 text-decoration:none;
+		 -webkit-transition: all 0.3s ease-in;
+		 -moz-transition:all 0.3s ease-in;
+	  	 -o-transition: all 0.3s ease-in;
+		 -transition: all 0.3s ease-in;
+		 opacity:0.7;
+			
+	}
+	#menuDiv a:hover{
+		color:#000;
+		background-color:#fff;
+	}
+	
+
+#midDiv{
+display:none;
+left:100px;
+position:absolute;
+margin-left:100px;
+width:45em;
+background-color:#000;
+color:#fff;
+opacity:0.8;
+overflow:hidden;  
+height:auto;
+}
+#timelineDiv{
+right:0;
+position:absolute;
+background-color:grey;
+}
+#ramkaD{
+	position:absolute; 
+    bottom:0; 
+    margin-top:-400px; 
+    width:100%;
+}
+#ramkaD iframe{
+width:100%;
+height:1.7em;
+}

@@ -1,0 +1,31 @@
+body{
+font-family: "Times New Roman", serif;
+}
+
+#containerR{ /* kontener glowny */
+color: #FFFFFF;
+height:auto;
+width: auto;
+}
+.labelR{
+font-weight: bold;
+display: inline-block;
+width: 5em;
+float:left;
+clear:left;
+text-align: right;
+margin-bottom:10px;
+}
+
+fieldset{
+width:300px;
+}
+
+.pData{
+float:right;
+}
+
+.submit{
+ margin-top:3em;  
+}
+

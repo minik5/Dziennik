@@ -13,14 +13,18 @@ date_default_timezone_set("Europe/Warsaw");
 $data = date('Y-m-d');
 
 $spr1 = strlen($tresc);
-$spr3 = mysql_fetch_array(mysql_query("SELECT COUNT(*) FROM zgloszenia WHERE NickUsera='".$nick."' AND 
-Temat='dodanie dziennika' OR Temat='usunęcie konta' OR Temat='usunięcie dziennika' LIMIT 1"));
-
+$spr3 = mysql_num_rows(mysql_query("SELECT * FROM zgloszenia WHERE NickUsera='".$nick."' AND 
+Temat='dodanie dziennika' AND StatusZgl<>2"));
+$spr4 = mysql_num_rows(mysql_query("SELECT * FROM zgloszenia WHERE NickUsera='".$nick."' AND 
+Temat='usunięcie konta' AND StatusZgl<>2"));
+$spr5 = mysql_num_rows(mysql_query("SELECT * FROM zgloszenia WHERE NickUsera='".$nick."' AND 
+Temat='usunięcie dziennika' AND StatusZgl<>2"));
+echo ($spr3." ".$spr4." ".$spr5);
 if($spr1 < 3){
 $komunikaty = "Zgloszenie musi miec min. 3 znaki. Uzupelnij formularz.<br>";
 echo '<br><span style="color: red; font-weight: bold;">'.$komunikaty.'</span><br>';
 }
-	elseif($spr3[0] > 0 && ($temat =="dodanie dziennika" || $temat=="usunęcie konta" || $temat=="usunięcie dziennika")){
+	elseif(($spr3 > 0 && $temat =="dodanie dziennika") || ($spr4 > 0 && $temat=="usunięcie konta") || ($spr5 > 0 && $temat=="usunięcie dziennika")){
 	$komunikaty .= '<font color="red"><b>Zgloszenie o podanym temacie: '.$temat.' <br>już istnieje i czeka na decyzję administratora. </b></font>';
 	}
 if ($komunikaty) {
@@ -43,7 +47,6 @@ if($spr2[0] > 0){
 	}
 if ($komunikaty) {
 echo $komunikaty;
-echo '<br><a href="index.php">Strona glowna</a>';
 exit;
 }
 else{
@@ -56,7 +59,6 @@ $result = mysql_query("INSERT INTO `zgloszenia` (NickUsera, Temat, Tresc,  DataZ
 }
 if (isset($result) && $result){
 echo '<br><span style="color: green; font-weight: bold;">Zgloszenie zostalo wyslane. </span><br>';
-echo '<br><a href="index.php">Strona glowna</a>';
 exit;
 }
 }
@@ -65,6 +67,6 @@ exit;
 
 }
 else{
-echo '<br>Nie byłeś zalogowany albo zostałeś wylogowany.<br><a href="login.php">Zaloguj się</a><br>';
+echo '<br>Nie byłeś zalogowany albo zostałeś wylogowany.<br><a href="index.html">Zaloguj się</a><br>';
 }
 ?>

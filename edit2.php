@@ -1,14 +1,14 @@
 ﻿<?php
 session_start();
 include ("connection.php");
-
+$komunikaty = '';
 /** Pytanie: Czy dopuszczamy możliwość zmiany hasła na to samo?
 
 */
 
 /** -------------początek zmiany hasła ------------- **/
 if (isset($_POST['pwd']) && isset($_SESSION['zalogowany'])){ 
-$komunikaty = '';
+
 $nick = $_SESSION['login'];
 $query = mysql_query("SELECT * FROM uzytkownicy WHERE Nick = '".$nick."'");
 $r = mysql_fetch_array($query);
@@ -59,14 +59,13 @@ $komunikaty.= "Nie podano aktualnego hasła.<br />";
 /** -------------koniec zmiany hasła ------------- **/
 
 if (isset($_POST['edit']) && isset($_SESSION['zalogowany'])){
-$komunikaty1 = '';
 $nick = $_SESSION['login'];
 $haslo = $_POST["password"];
 $imie = $_POST["firstname"];
 $nazwisko = $_POST["surname"];
 $email = $_POST["email"];
 $omnie = $_POST['omnie'];
-if (isset($_POST['datepicker'])){
+if (isset($_POST['datepicker']) && $_POST['datepicker'] != "undefined"){
 $data = $_POST['datepicker'];
 }
 $query = mysql_query("SELECT * FROM uzytkownicy WHERE Nick = '".$nick."'");
@@ -83,7 +82,7 @@ $result1 = mysql_query("UPDATE uzytkownicy  SET Imie='".$imie."', Nazwisko='".$n
     die('Invalid query: ' . mysql_error());
   }
   else {
-  $komunikaty1.="Dane zostały zmienione poprawnie. <br />";
+  $komunikaty.="Dane zostały zmienione poprawnie. <br />";
   }
 
 }
@@ -91,4 +90,5 @@ $result1 = mysql_query("UPDATE uzytkownicy  SET Imie='".$imie."', Nazwisko='".$n
 
 
 }
+echo $komunikaty;
 ?>

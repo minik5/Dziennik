@@ -1,4 +1,4 @@
-﻿<?php session_start();
+<?php session_start();
 include ("connection.php");
 
 
@@ -10,7 +10,7 @@ $idwpisu = $_POST['idWpisu'];
 $dziennik = $_SESSION['dziennik'];
 $nick = $_SESSION['login'];
 $komunikaty = '';
-// ******** USUWANIE ZDJĘCIA ********
+// ******** USUWANIE ZDJ�?CIA ********
 if (isset($_POST['usun']) && isset($_POST['zdj'])){
 
 for ($i =0; $i<sizeof($_POST['zdj']); $i++){
